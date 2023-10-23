@@ -14,6 +14,6 @@ public class OnEnableAndDisable_Beh : MonoBehaviour
 
     private void OnDisable()
     {
-        onDisableEvent?.Invoke();
+        try { onDisableEvent.Invoke(); } catch { }
     }
 }

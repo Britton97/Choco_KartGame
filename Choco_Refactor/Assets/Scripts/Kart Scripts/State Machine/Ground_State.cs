@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEngine.Rendering.DebugUI;
+using UnityEngine.Events;
 
 
 public class Ground_State : State_Base
@@ -217,6 +216,8 @@ public class Ground_State : State_Base
     private WaitForFixedUpdate waitForFixedUpdateDecharge = new WaitForFixedUpdate();
     private float dechargeBoostTime;
     private float boostPower;
+    [Header("Boost Event")]
+    [SerializeField] UnityEvent onBoostStart;
 
     //PURPOSE: Decharge boost over kart_stats.dechargeTime
     //Will fill up a variable called 'boostPower' that will be used to multiply the speed of the kart
@@ -225,7 +226,7 @@ public class Ground_State : State_Base
     IEnumerator DechargeBoostCoroutine()
     {
         dechargeBoostTime = 0;
-
+        onBoostStart.Invoke();
 
         while (dechargeBoostTime < kart_stats.timeBoostActive)
         {
