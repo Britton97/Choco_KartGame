@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class ItemBehavior : MonoBehaviour
 {
+    //IMPORTANT!!!!!
+    //THIS SCRIPT IS NOT WORKING RIGHT NOW
+    //IMPORTANT!!!!!
     [SerializeField] StatType statType;
     [SerializeField] DataItem dataItem;
     [SerializeField] GameObject itemParent;
@@ -39,7 +42,7 @@ public class ItemBehavior : MonoBehaviour
             burst.Play();
             Debug.Log("hit");
             CollectItemBeh itemCollector = c_CollectItemBeh.CheckInterface(other.gameObject) as CollectItemBeh;
-            itemCollector.PickUpItem(statType, onCollisionData.Value);
+            //itemCollector.PickUpItem(statType, onCollisionData.Value);
             burst.transform.parent = other.transform;
             StartCoroutine(DestroyItem());
             //Destroy(gameObject, 2);

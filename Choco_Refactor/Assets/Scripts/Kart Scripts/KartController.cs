@@ -9,8 +9,6 @@ public class KartController : MonoBehaviour, ICollisionHandlerable
     //---Player Info Getter---//
     private PlayerInfoGetter playerInfoGetter;
 
-    //---Rigidbody---//
-    private Rigidbody colliderBall;
 
     //---Input---//
     private Kart_Input _input;
@@ -20,11 +18,13 @@ public class KartController : MonoBehaviour, ICollisionHandlerable
     [SerializeField] private GameObject _modelHolder;
     [SerializeField] private GameObject _tiltObject;
     [SerializeField] private GameObject _lookAtObject;
+    //---Kart Rigidbody---//
+    private Rigidbody colliderBall;
 
     //---State Machine---//
     [SerializeField] private State_Base _currentState;
     [SerializeField] private List<State_Base> _dataStates;
-    [SerializeField] private Dictionary<KartState, State_Base> _stateDictionary = new Dictionary<KartState, State_Base>();
+    //[SerializeField] private Dictionary<KartState, State_Base> _stateDictionary = new Dictionary<KartState, State_Base>();
 
     //---Kart Stats---//
     [SerializeField] Kart_Stats kart_stats;
@@ -80,6 +80,17 @@ public class KartController : MonoBehaviour, ICollisionHandlerable
     #region CallOnEnterState Function
     public void CallOnEnterState(KartState passIn)
     {
+        _currentState.enabled = false;
+
+        foreach (State_Base state in _dataStates)
+        {
+            if (state.stateType == passIn)
+            {
+                _currentState = state;
+            }
+        }
+
+        _currentState.enabled = true;
         _currentState.OnEnter(colliderBall, _modelHolder, _kartNormal, _tiltObject, _input, kart_stats, player_stats);
     }
     #endregion

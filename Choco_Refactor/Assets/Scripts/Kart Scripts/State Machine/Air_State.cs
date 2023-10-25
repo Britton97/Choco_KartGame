@@ -5,107 +5,131 @@ using UnityEngine.Events;
 
 public class Air_State : State_Base
 {
-    //REVIEW
-    //currentSpeed should not be a variable. The scriptable object should not be holding onto a variable that is constantly changing.
-    //elasedTime should not be a variable. The scriptable object should not be holding onto a variable that is constantly changing.
-    //should not be reading input actions that should be handled by a monobeaviour script.
-    //I'm not sure what dotProduct is doing but it should probably be handled by a monobehaviour script.
-    //same with calculatedDotProduct ^^^
-
     [Header("Exit State Condition")]
-    [SerializeField] private float rayDistance;
-    [SerializeField] private float applyGravityRayDistance;
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private State_Base onTouchGround;
-    [SerializeField] private float xTurnSpeedMultiplier = 2f;
-    [SerializeField] private float yTurnSpeedMultiplier = 2f;
+    private float elaspedTimeInFlyingState;
 
-    private float calculatedDotProduct;
-    private float dotProduct;
+    #region Update and FixedUpdate Functions
+    private void Update()
+    {
+        GroundCheck();
+        AButton();
+        FlightSlider();
+    }
 
-    private float currentSpeed;
-    private float elaspedTime;
-
-
+    private void FixedUpdate()
+    {
+        LeftStick();
+        Move();
+        Tilt();
+        FlyingAngle();
+        GroundPull();
+    }
+    #endregion
+    #region OnEnter Function
     public override void OnEnter(Rigidbody passedRB, GameObject pKartModel, GameObject pKartNormal, GameObject pTiltObject, Kart_Input pInput, Kart_Stats pStats, Player_Stats pPlayerStats)
     {
         base.OnEnter(passedRB, pKartModel, pKartNormal, pTiltObject, pInput, pStats, pPlayerStats);
-        elaspedTime = 0;
+        elaspedTimeInFlyingState = 0;
         kart_stats.canAffectCharge = false;
-        //Debug.Log("Flying State");
     }
+    #endregion
+    #region AButton Function and Variables
+    private float button;
     public override void AButton()
     {
-        float button = input.Kart_Controls.ActionButton.ReadValue<float>(); //read value of A button
+        button = input.Kart_Controls.ActionButton.ReadValue<float>(); //read value of A button
         if (button == 1) //if 'A' button held down execute below
         {
             ApplyGravity();
         }
     }
-
+    #endregion
+    #region ApplyGravity Function
+    [SerializeField] private float applyGravityRayDistance = .05f;
     public void ApplyGravity()
     {
         RaycastHit hit;
 
+        //if ray doesnt hit ground layer then apply gravity
         if (!Physics.Raycast(kartNormal.transform.position, Vector3.down, out hit, applyGravityRayDistance, groundLayer))
         {
             rb.AddForce(Vector3.up * _gravity.DataValue * _gravityMultiplier.DataValue * Time.deltaTime, ForceMode.Acceleration);
         }
     }
-
+    #endregion
+    #region GroundCheck Function and Variables
+    [Tooltip("The distance a ray will cast. If the ground if less than the distance of this variable you will exit the flying state")]
+    [SerializeField] private float groundCheckRayDistance = 1f;
     public void GroundCheck()
     {
-        if (Physics.Raycast(kartNormal.transform.position, Vector3.down, rayDistance, groundLayer))
+        //if ray hit ground layer then exit air state
+        if (Physics.Raycast(kartNormal.transform.position, Vector3.down, groundCheckRayDistance, groundLayer))
         {
-            //Debug.Log("Exiting Air");
+            Debug.Log("Exiting Air");
             OnExit(KartState.Ground);
         }
     }
-
+    #endregion
+    #region GroundPull Function and Variables
     public void GroundPull()
     {
         //if elaspedTime is greater than flightTime
         //then start evaluating the flightcurve and apply the force
-        elaspedTime += Time.deltaTime * (2 - dotProduct);
-        if (elaspedTime > kart_stats.flightTime * player_stats.glide)
+        elaspedTimeInFlyingState += Time.deltaTime * (2 - dotProduct);
+        if (elaspedTimeInFlyingState > kart_stats.ReturnGlideStat())
         {
-            float timePassed = elaspedTime - (kart_stats.flightTime * player_stats.glide);
-            float gravityPercentage = timePassed / ((kart_stats.flightTime * player_stats.glide) / 2); //after full flight time has elapsed, start applying gravity by the rate of half the flight time
+            float timePassed = elaspedTimeInFlyingState - kart_stats.ReturnGlideStat();
+            float gravityPercentage = timePassed / (kart_stats.ReturnGlideStat() / 2); //after full flight time has elapsed, start applying gravity by the rate of half the flight time
             float curve = kart_stats.flightCurve.Evaluate(gravityPercentage);
             rb.AddForce(Vector3.up * _gravity.DataValue * (_gravityMultiplier.DataValue * curve));
         }
 
         //kart_stats.boostValue.DataValue = elaspedTime / kart_stats.flightTime;
     }
-
+    #endregion
+    #region LeftStick Function and Variables
+    [SerializeField] private float xTurnSpeedMultiplier = 1f;
+    [SerializeField] private float yTurnSpeedMultiplier = 2f;
     public override void LeftStick()
     {
         Vector2 move = input.Kart_Controls.Move.ReadValue<Vector2>();
 
         float x = kartModel.transform.eulerAngles.x;
         float y = kartModel.transform.eulerAngles.y;
-        x = x + (move.y * (kart_stats.turnSpeed * player_stats.turn) * xTurnSpeedMultiplier * Time.deltaTime);
-        y = y + (move.x * (kart_stats.turnSpeed * player_stats.turn) * yTurnSpeedMultiplier * Time.deltaTime);
+        x = x + (move.y * (kart_stats.ReturnTurnStat()) * xTurnSpeedMultiplier * Time.deltaTime);
+        y = y + (move.x * (kart_stats.ReturnTurnStat()) * yTurnSpeedMultiplier * Time.deltaTime);
         kartModel.transform.rotation = Quaternion.Euler(x, y, 0);
     }
-
+    #endregion
+    #region Move Function and Variables
+    private float currentSpeed;
     public override void Move()
     {
         float button = input.Kart_Controls.ActionButton.ReadValue<float>();
 
         if (button == 0)
         {
-            currentSpeed = Mathf.Lerp(currentSpeed, kart_stats.topSpeed * player_stats.topSpeed, Time.deltaTime * kart_stats.accelrateRate);
+            currentSpeed = Mathf.Lerp(currentSpeed, kart_stats.ReturnTopSpeedStat(), Time.deltaTime * kart_stats.accelrateRate);
         }
         rb.AddForce((kartModel.transform.forward * currentSpeed * kart_stats.forceMultiplier.DataValue) * calculatedDotProduct);
     }
-
+    #endregion
+    #region FlyingAngle Function and Variables
+    private float calculatedDotProduct;
+    private float dotProduct;
     public void FlyingAngle()
     {
         dotProduct = Vector3.Dot(Vector3.up ,kartModel.transform.forward);
         dotProduct = 1 - dotProduct;
-        //Debug.Log(dotProduct);
         calculatedDotProduct = kart_stats.flightPowerCurve.Evaluate(dotProduct);
-        float t = kart_stats.flightPowerCurve.keys[kart_stats.flightPowerCurve.length - 1].value;
+        //float t = kart_stats.flightPowerCurve.keys[kart_stats.flightPowerCurve.length - 1].value;
     }
+    #endregion
+    #region FlightSlider Function and Variables
+    private void FlightSlider()
+    {
+        _uiBoostSlider.value = elaspedTimeInFlyingState / kart_stats.flightTime;
+    }
+    #endregion
 }

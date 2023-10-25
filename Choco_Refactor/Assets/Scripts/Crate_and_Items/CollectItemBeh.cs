@@ -11,8 +11,8 @@ public class CollectItemBeh : MonoBehaviour
         player_Stats = pStats;
     }
 
-    public void PickUpItem(StatType pStatType, float pAmount)
+    public void PickUpItem(StatType pStatType)
     {
-        player_Stats.AddToStat(pStatType, pAmount);
+        player_Stats.AddToStat(pStatType);
     }
 }

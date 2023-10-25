@@ -89,7 +89,6 @@ public class Platform_Behavior : MonoBehaviour
         //if collision is the playersonplatform list
         if (playersOnPlatform.Contains(collision.gameObject))
         {
-            Debug.Log("");
             playersOnPlatform.Remove(collision.gameObject);
             collision.gameObject.transform.parent.parent = null;
         }

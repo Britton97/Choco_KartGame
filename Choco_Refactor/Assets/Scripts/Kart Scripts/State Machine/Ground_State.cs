@@ -87,8 +87,8 @@ public class Ground_State : State_Base
         Debug.DrawRay(kartNormal.transform.position, Vector3.down * rayDistance, Color.red);
         if (!Physics.Raycast(kartNormal.transform.position, Vector3.down, rayDistance, groundLayer))
         {
-            //OnExit(KartState.Flying);
-            //Debug.Log("Trying to exit ground state");
+            OnExit(KartState.Flying);
+            Debug.Log("Trying to exit ground state");
         }
     }
     #endregion
@@ -98,9 +98,9 @@ public class Ground_State : State_Base
     public override void LeftStick()
     {
         Vector2 move = input.Kart_Controls.Move.ReadValue<Vector2>();
-        rotate = move.x * (kart_stats.turnSpeed * player_stats.turn);
+        rotate = move.x * (kart_stats.ReturnTurnStat());
         currentRotate = Mathf.Lerp(currentRotate, rotate, Time.deltaTime * 4f);
-        float turnLimiter = Mathf.Abs(currentSpeed / (kart_stats.topSpeed * player_stats.topSpeed));
+        float turnLimiter = Mathf.Abs(currentSpeed / kart_stats.ReturnTopSpeedStat());
         currentRotate = currentRotate * kart_stats.turnSpeedLimiterCurve.Evaluate(turnLimiter);
         rotate = 0f;
 
@@ -143,7 +143,7 @@ public class Ground_State : State_Base
         {
             Vector2 move = input.Kart_Controls.Move.ReadValue<Vector2>();
 
-            currentSpeed = Mathf.Lerp(currentSpeed, 0, Time.deltaTime * (kart_stats.decelerateRate * player_stats.weight));
+            currentSpeed = Mathf.Lerp(currentSpeed, 0, Time.deltaTime * (kart_stats.ReturnWeightStat()));
 
             if (!lastFrameForButtonDown)
             {
@@ -189,20 +189,14 @@ public class Ground_State : State_Base
     private float chargeUpBoostTime;
     private float boostPercentageToFull;
     private float boostPercentageToFullUI;
-
-
-    //PURPOSE: Charge up boost over kart_stats.chargeTime
-    //Will fill up a variable called 'boostPercentageToFull' that will be used to multiply the speed of the kart
-    //'boostPercentageToFull' will be used by the decharge coroutine.
-    //'boostPercentageToFull' will times itself by the boost curve to get the boost power. This way you do not get a full boost if you only charge up a little bit.
     IEnumerator ChargeUpBoostCoroutine()
     {
         boostChargeUpCoroutineRunning = true;
         chargeUpBoostTime = 0;
-        while (chargeUpBoostTime < kart_stats.timeToChargeBoost)
+        while (chargeUpBoostTime < kart_stats.ReturnChargeStat())
         {
             chargeUpBoostTime += Time.deltaTime;
-            boostPercentageToFull = chargeUpBoostTime / kart_stats.timeToChargeBoost;
+            boostPercentageToFull = chargeUpBoostTime / kart_stats.ReturnChargeStat();
             boostPercentageToFullUI = boostPercentageToFull;
             yield return waitForFixedUpdateBoost;
         }
@@ -250,14 +244,15 @@ public class Ground_State : State_Base
 
         if (button == 0)
         {
-            currentSpeed = Mathf.Lerp(currentSpeed, kart_stats.topSpeed * player_stats.topSpeed, Time.deltaTime * kart_stats.accelrateRate);
+            currentSpeed = Mathf.Lerp(currentSpeed, kart_stats.ReturnTopSpeedStat(), Time.deltaTime * kart_stats.accelrateRate);
         }
 
         #region WaveEffect Logic (Commented Out)
         //waveController.WaveLength = ((currentSpeed / kart_stats.topSpeed * player_stats.topSpeed) + 1) * 4;
         #endregion
         //rb.AddForce(kartModel.transform.forward * ((currentSpeed * configureSpeed * kart_stats.forceMultiplier.DataValue)));
-        rb.AddForce(kartModel.transform.forward * ((currentSpeed * kart_stats.forceMultiplier.DataValue) + (_configureSpeed * kart_stats.forceMultiplier.DataValue)));
+        //rb.AddForce(kartModel.transform.forward * ((currentSpeed * kart_stats.forceMultiplier.DataValue) + (_configureSpeed * kart_stats.forceMultiplier.DataValue)));
+        rb.AddForce(kartModel.transform.forward * ((currentSpeed + _configureSpeed) * kart_stats.forceMultiplier.DataValue));
     }
     #endregion
     #region Wall Check Function Variables and Functions
@@ -289,7 +284,7 @@ public class Ground_State : State_Base
     public void BoardIdleSine()
     {
         time += Time.deltaTime;
-        speedAdjuster = currentSpeed / (kart_stats.topSpeed + (player_stats.topSpeed -1));
+        speedAdjuster = currentSpeed / (kart_stats.topSpeed + (player_stats.topSpeedAmount -1));
         float newAmp = Remap(speedAdjuster, 0f, 1f, minAmplitude, maxAmplitude);
 
         float y = newAmp * Mathf.Sin(2f * Mathf.PI * upDownFrequency * time);

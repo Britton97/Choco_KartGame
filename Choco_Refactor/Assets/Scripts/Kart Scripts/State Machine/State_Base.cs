@@ -17,7 +17,7 @@ public abstract class State_Base : MonoBehaviour
     [HideInInspector] public KartController kartController;
     [Header("UI GameObjects")]
     [SerializeField] public DataGameObject uiBoostSlider;
-    [SerializeField] public Slider _uiBoostSlider;
+    [HideInInspector] public Slider _uiBoostSlider;
     //---Kart GameObjects---//
     [HideInInspector]public Rigidbody rb;
     [HideInInspector]public GameObject kartNormal;
