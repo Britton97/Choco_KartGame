@@ -8,6 +8,8 @@ public class Kart_Stats : ScriptableObject
 
     [Header("Kart Movement Variables")]
     [SerializeField] public float topSpeed;
+    [Range(0,5)]
+    [Tooltip("Higher numbers make the kart slow down quicker")]
     [SerializeField] public float decelerateRate;
     [SerializeField] public float accelrateRate;
     [SerializeField] public DataFloat scootSpeed;
@@ -18,7 +20,15 @@ public class Kart_Stats : ScriptableObject
     [Tooltip("this is a function much of how much boost the player will get at the percentage of boost completion")]
     [SerializeField] public AnimationCurve boostPowerOverTime;
     [SerializeField] public float timeToChargeBoost = 1;
+    [Tooltip("This will shrink the board model of the period charging the boost.")]
+    [SerializeField] public AnimationCurve modelBoostShrinkCurve;
     [SerializeField] public float timeBoostActive = 1;
+
+    [Header("Drift / Sliding Variables (Hover over for details)")]
+    [Tooltip("X-Axis = zero speed --> top speed\r\nY-Axis = no turning allowed --> normal amount of turning")]
+    [SerializeField] public AnimationCurve driftTurnLimiterCurve;
+    [Tooltip("X-Axis = zero speed --> top speed\r\nY-Axis = direction going when 'A' button pushed --> direction kart is looking")]
+    [SerializeField] public AnimationCurve momentumDriftCurve;
 
     [Header("Turn Variables")]
     [SerializeField] public float turnSpeed = 1f;

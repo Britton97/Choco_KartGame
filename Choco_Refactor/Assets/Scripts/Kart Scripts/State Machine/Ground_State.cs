@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.VFX;
 
 
 public class Ground_State : State_Base
@@ -12,6 +13,8 @@ public class Ground_State : State_Base
     [SerializeField] private float wallRayDistance; // Distance of the raycast used to detect walls.
     [Header("Ground Detection Layer")]
     [SerializeField] private LayerMask groundLayer; // Layer mask used to detect the ground.
+    [SerializeField] private VisualEffect boostEffect;
+    [SerializeField] private VisualEffect driftEffect;
     private float currentSpeed; // The current speed of the kart.
 
     #region WaveEffect (Commented Out)
@@ -27,11 +30,14 @@ public class Ground_State : State_Base
     private void Update()
     {
         AButton();
+        //boostEffect.SetFloat("BoostPower", boostPercentageToFull);
     }
 
     private void FixedUpdate()
     {
         AirCheck();
+        SetDriveMomentumDirection();
+        SpeedTurnLimiter();
         LeftStick();
         MatchNormal();
         ApplyGravity();
@@ -40,6 +46,8 @@ public class Ground_State : State_Base
         WallCheck();
         BoardIdleSine();
         UpdateChargeMeter();
+        SetBooster();
+        EnableorDisableDriftEffect();
     }
 
     #region OnEnter and OnExit Functions
@@ -47,7 +55,6 @@ public class Ground_State : State_Base
     {
 
         base.OnEnter(passedRB, pKartModel, pKartNormal, pTiltObject, pInput, pStats, pPlayerStats);
-
         if (passedRB == null)
         {
             Debug.LogError($"nothing was passed");
@@ -101,10 +108,14 @@ public class Ground_State : State_Base
         rotate = move.x * (kart_stats.ReturnTurnStat());
         currentRotate = Mathf.Lerp(currentRotate, rotate, Time.deltaTime * 4f);
         float turnLimiter = Mathf.Abs(currentSpeed / kart_stats.ReturnTopSpeedStat());
-        currentRotate = currentRotate * kart_stats.turnSpeedLimiterCurve.Evaluate(turnLimiter);
+        //currentRotate = currentRotate * kart_stats.turnSpeedLimiterCurve.Evaluate(turnLimiter);
         rotate = 0f;
 
-        kartModel.transform.localEulerAngles = Vector3.Lerp(kartModel.transform.localEulerAngles, new Vector3(0f, kartModel.transform.localEulerAngles.y + currentRotate, 0), Time.deltaTime * 4f);
+        //needs to lerp between kartModel.transform.localEulerAngles and the newRotation for the blend controls to work
+        Vector3 currentRotation = kartModel.transform.localEulerAngles;
+        Vector3 newRotation = new Vector3(0f, kartModel.transform.localEulerAngles.y + currentRotate, 0);
+        Vector3 blendRotation = Vector3.Lerp(currentRotation, newRotation, playerInputDirectionBlendAmount); //0 will not let the player turn / 1 will resume normal turning
+        kartModel.transform.localEulerAngles = Vector3.Lerp(currentRotation, blendRotation, Time.deltaTime * 4f);
         #region WaveEffect Logic (Commented Out)
         //waveController.ReceiveVector2Input(move);
         #endregion
@@ -147,6 +158,7 @@ public class Ground_State : State_Base
 
             if (!lastFrameForButtonDown)
             {
+                SetDriftMomentumDirection(); //Testing!!!
                 if (!boostChargeUpCoroutineRunning) boostChargeUpCoroutine = StartCoroutine(ChargeUpBoostCoroutine());
             }
             lastFrameForButtonDown = true;
@@ -159,7 +171,7 @@ public class Ground_State : State_Base
                 //kartController.OnLeaveKartEvent();
                 Debug.Log("Trying to exit the kart");
             }
-            else if (move.y > 0.25f)
+            else if (move.y > 0.25f && currentSpeed <= kart_stats.scootSpeed.DataValue)
             {
                 currentSpeed = kart_stats.scootSpeed.DataValue;
             }
@@ -182,7 +194,7 @@ public class Ground_State : State_Base
     #endregion
     #region Boost Coroutine Variables and Functions
     #region Charge Up Boost Coroutine Variables and Functions
-    //Boost Coroutine Variables
+
     private Coroutine boostChargeUpCoroutine;
     private bool boostChargeUpCoroutineRunning = false;
     private WaitForFixedUpdate waitForFixedUpdateBoost = new WaitForFixedUpdate();
@@ -197,6 +209,8 @@ public class Ground_State : State_Base
         {
             chargeUpBoostTime += Time.deltaTime;
             boostPercentageToFull = chargeUpBoostTime / kart_stats.ReturnChargeStat();
+            //Vector3 modelSquash = new Vector3(kartModel.transform.localScale.x, kart_stats.modelBoostShrinkCurve.Evaluate(boostPercentageToFull), kartModel.transform.localScale.z);
+            //kartModel.transform.localScale = Vector3.Lerp(kartModel.transform.localScale, modelSquash, boostPercentageToFull);
             boostPercentageToFullUI = boostPercentageToFull;
             yield return waitForFixedUpdateBoost;
         }
@@ -212,21 +226,18 @@ public class Ground_State : State_Base
     private float boostPower;
     [Header("Boost Event")]
     [SerializeField] UnityEvent onBoostStart;
-
-    //PURPOSE: Decharge boost over kart_stats.dechargeTime
-    //Will fill up a variable called 'boostPower' that will be used to multiply the speed of the kart
-    //But will be limited by the percentof the boost that was charged up.
-    //'boostPower' is the variable that will be used by the kart to multiply the speed.
     IEnumerator DechargeBoostCoroutine()
     {
         dechargeBoostTime = 0;
         onBoostStart.Invoke();
+        //kartModel.transform.localScale = new Vector3(1, 1, 1);
 
         while (dechargeBoostTime < kart_stats.timeBoostActive)
         {
             dechargeBoostTime += Time.deltaTime;
-            boostPercentageToFullUI = Mathf.Lerp(boostPercentageToFullUI, 0, dechargeBoostTime/kart_stats.timeBoostActive);
-            boostPower = kart_stats.boostPowerOverTime.Evaluate(dechargeBoostTime / kart_stats.timeBoostActive) * boostPercentageToFull;
+            float percentage = dechargeBoostTime / kart_stats.timeBoostActive;
+            boostPercentageToFullUI = Mathf.Lerp(boostPercentageToFullUI, 0, percentage);
+            boostPower = kart_stats.boostPowerOverTime.Evaluate(percentage) * boostPercentageToFull;
             yield return waitForFixedUpdateDecharge;
         }
         boostPercentageToFull = 0;
@@ -250,9 +261,9 @@ public class Ground_State : State_Base
         #region WaveEffect Logic (Commented Out)
         //waveController.WaveLength = ((currentSpeed / kart_stats.topSpeed * player_stats.topSpeed) + 1) * 4;
         #endregion
-        //rb.AddForce(kartModel.transform.forward * ((currentSpeed * configureSpeed * kart_stats.forceMultiplier.DataValue)));
-        //rb.AddForce(kartModel.transform.forward * ((currentSpeed * kart_stats.forceMultiplier.DataValue) + (_configureSpeed * kart_stats.forceMultiplier.DataValue)));
-        rb.AddForce(kartModel.transform.forward * ((currentSpeed + _configureSpeed) * kart_stats.forceMultiplier.DataValue));
+        
+        //rb.AddForce(kartModel.transform.forward * ((currentSpeed + _configureSpeed) * kart_stats.forceMultiplier.DataValue));
+        rb.AddForce(DriftMomentumControl() * ((currentSpeed + _configureSpeed) * kart_stats.forceMultiplier.DataValue));
     }
     #endregion
     #region Wall Check Function Variables and Functions
@@ -305,5 +316,94 @@ public class Ground_State : State_Base
         return remappedValue;
     }
 
+    #endregion
+    #region Drift Variables and Functions
+    private float playerInputDirectionBlendAmount = 1;
+    private Vector3 driftMomentumDirection;
+    private Vector3 driveMomentumDirection;
+    private Vector3 moveDirection;
+    [SerializeField] private AnimationCurve momentumDriveCurve;
+    [Range(0,1)]
+    [SerializeField] float driftThreshold;
+
+    #region Set Drift Momentum Direction Variables and Functions
+    public void SetDriftMomentumDirection()
+    {
+        driftMomentumDirection = rb.velocity.normalized;
+    }    
+    public void SetDriveMomentumDirection()
+    {
+        driveMomentumDirection = rb.velocity.normalized;
+    }
+    #endregion
+
+    public void SpeedTurnLimiter()
+    {
+        float button = input.Kart_Controls.ActionButton.ReadValue<float>();
+        //if (button == 0 || currentSpeed <= kart_stats.scootSpeed.DataValue) { playerInputDirectionBlendAmount = 1; return; }
+        //if (currentSpeed <= kart_stats.scootSpeed.DataValue) { playerInputDirectionBlendAmount = 1; return; }
+
+        float blendPercentage = currentSpeed / kart_stats.ReturnTopSpeedStat();
+        //closer to 1 means more limiter turn
+        //0 will not let the player turn / 1 will resume normal turning
+        playerInputDirectionBlendAmount = kart_stats.driftTurnLimiterCurve.Evaluate(blendPercentage);
+    }
+    public Vector3 DriftMomentumControl()
+    {
+        float button = input.Kart_Controls.ActionButton.ReadValue<float>();
+        //if (button == 0 || currentSpeed <= kart_stats.scootSpeed.DataValue) { return kartModel.transform.forward; }
+        if (currentSpeed <= kart_stats.scootSpeed.DataValue) { return kartModel.transform.forward; }
+
+        if(button == 0)
+        {
+            float blendPercentage = currentSpeed / kart_stats.ReturnTopSpeedStat(); //this might be better
+            float blend = momentumDriveCurve.Evaluate(blendPercentage);
+
+            moveDirection = (driveMomentumDirection * blend) + (kartModel.transform.forward * (1 - blend));
+        }
+        if (button == 1)
+        {
+            float blendPercentage = currentSpeed / kart_stats.ReturnTopSpeedStat(); //this might be better
+            float blend = kart_stats.momentumDriftCurve.Evaluate(blendPercentage);
+            moveDirection = (driftMomentumDirection * blend) + (kartModel.transform.forward * (1 - blend));
+        }
+        return moveDirection;
+    }
+
+    #endregion
+    #region VFX Functions and Variables
+    private float speedPercentage;
+    public void SetBooster()
+    {
+        speedPercentage = currentSpeed / kart_stats.ReturnTopSpeedStat();
+        boostEffect.SetFloat("BoostDuraction", speedPercentage);
+    }
+    private void EnableorDisableDriftEffect()
+    {
+        Vector2 move = input.Kart_Controls.Move.ReadValue<Vector2>();
+        float button = input.Kart_Controls.ActionButton.ReadValue<float>();
+        if (button == 0)
+        {
+            driftEffect.gameObject.SetActive(false);
+            return;
+        }
+        if (Mathf.Abs(move.x) > driftThreshold)
+        {
+            driftEffect.gameObject.SetActive(true);
+        }
+        else
+        {
+            driftEffect.gameObject.SetActive(false);
+            return;
+        }
+        if (move.x < 0)
+        {
+            driftEffect.SetBool("LeftorRight", true);
+        }
+        else if (move.x > 0)
+        {
+            driftEffect.SetBool("LeftorRight", false);
+        }
+    }
     #endregion
 }
