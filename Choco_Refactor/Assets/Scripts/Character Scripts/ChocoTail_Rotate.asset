@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cfd7ea26febfa94ebd5b72603b02225, type: 3}
   m_Name: ChocoTail_Rotate
   m_EditorClassIdentifier: 
-  nuetralPosition: {x: 0, y: 0, z: 0}
-  nuetralRotation: {x: 0, y: 0, z: 0}
-  positiveOffset: {x: 0, y: 0, z: 0}
-  positiveRotation: {x: 0, y: 0, z: 0}
-  negativeOffset: {x: 0, y: 0, z: 0}
-  negativeRotation: {x: 0, y: 0, z: 0}
+  nuetralPosition: {x: 0, y: 0.061086904, z: 0}
+  nuetralRotation: {x: 0.0000034150942, y: -0.00000091438056, z: 0.0000014420908}
+  positiveOffset: {x: 0, y: 0.061086904, z: 0}
+  positiveRotation: {x: -0, y: 25, z: 0}
+  negativeOffset: {x: 0, y: 0.061086904, z: 0}
+  negativeRotation: {x: 0, y: -25, z: 0}

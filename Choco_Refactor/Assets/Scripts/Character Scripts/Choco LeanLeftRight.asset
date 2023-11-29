@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Choco LeanLeftRight
   m_EditorClassIdentifier: 
   nuetralPosition: {x: 0, y: 0, z: 0}
-  nuetralRotation: {x: 0, y: 0, z: 0}
+  nuetralRotation: {x: -0, y: 0, z: 0}
   positiveOffset: {x: 0, y: 0, z: 0}
-  positiveRotation: {x: 0, y: 0, z: 0}
+  positiveRotation: {x: -0, y: 25, z: 0}
   negativeOffset: {x: 0, y: 0, z: 0}
-  negativeRotation: {x: 0, y: 0, z: 0}
+  negativeRotation: {x: 0, y: -25, z: 0}

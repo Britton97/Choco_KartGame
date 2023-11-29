@@ -15,6 +15,9 @@ public class Ground_State : State_Base
     [SerializeField] private LayerMask groundLayer; // Layer mask used to detect the ground.
     [SerializeField] private VisualEffect boostEffect;
     [SerializeField] private VisualEffect driftEffect;
+
+    [Header("Lean Settings")]
+    [SerializeField] private CharacterRigObjects characterLeanObjects;
     private float currentSpeed; // The current speed of the kart.
 
     #region WaveEffect (Commented Out)
@@ -48,8 +51,16 @@ public class Ground_State : State_Base
         UpdateChargeMeter();
         SetBooster();
         EnableorDisableDriftEffect();
+        DoCharacterBlends();
     }
-
+    float characterBlendValue = 0;
+    [SerializeField] float blendSpeed = 1;
+    public void DoCharacterBlends()
+    {
+        Vector2 move = input.Kart_Controls.Move.ReadValue<Vector2>();
+        characterBlendValue = Mathf.Lerp(characterBlendValue, move.x, Time.deltaTime * blendSpeed);
+        characterLeanObjects.ChangeBlendState(characterBlendValue);
+    }
     #region OnEnter and OnExit Functions
     public override void OnEnter(Rigidbody passedRB, GameObject pKartModel, GameObject pKartNormal, GameObject pTiltObject, Kart_Input pInput, Kart_Stats pStats, Player_Stats pPlayerStats)
     {
