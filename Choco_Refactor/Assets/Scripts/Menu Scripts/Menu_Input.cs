@@ -23,7 +23,8 @@ public class Menu_Input : MonoBehaviour
     [SerializeField] List<RectTransform> buttonPos = new List<RectTransform>();
     private int buttonSelection = 0;
     [SerializeField] private float interval = 1f;
-
+    [SerializeField] List<GameObject> models = new List<GameObject>();
+    private GameObject activeModel;
     #region OnEnable/OnDisable Functions
     private void OnEnable()
     {
@@ -39,12 +40,13 @@ public class Menu_Input : MonoBehaviour
     private void Awake()
     {
         _input = new Kart_Input();
-        items.Add(new Store_Items(0, 100, false));
-        items.Add(new Store_Items(1, 200, false));
-        items.Add(new Store_Items(2, 300, true));
-        items.Add(new Store_Items(3, 400, false));
+        items.Add(new Store_Items(0, 100, false, models[0]));
+        items.Add(new Store_Items(1, 200, false, models[1]));
+        items.Add(new Store_Items(2, 300, true, models[2]));
+        items.Add(new Store_Items(3, 400, false, models[3]));
         _selector.localPosition = leftButton.localPosition;
         currentSelection = 0;
+        models[currentSelection].SetActive(true);
         _priceText.text = items[currentSelection].price.ToString();
         lockSprite.sprite = items[currentSelection].isBought ? unlocked : _lock;
         myMoneyText.text = $"Money: {myMoney.ToString()}";
@@ -126,6 +128,7 @@ public class Menu_Input : MonoBehaviour
         float button = _input.Kart_Controls.ActionButton.ReadValue<float>();
         if (button == 1 && !aButtonDownLastFrame)
         {
+            models[currentSelection].SetActive(false);
             if (buttonSelection == 0)
             {
                 if (currentSelection == 0)
@@ -172,6 +175,7 @@ public class Menu_Input : MonoBehaviour
                 }
             }
             _priceText.text = items[currentSelection].price.ToString();
+            models[currentSelection].SetActive(true);
             lockSprite.sprite = items[currentSelection].isBought ? unlocked : _lock;
         }
     }
@@ -182,10 +186,12 @@ public class Store_Items
     public int itemNumber;
     public int price;
     public bool isBought;
-    public Store_Items(int _itemNumber, int _price, bool _isBought)
+    public GameObject model;
+    public Store_Items(int _itemNumber, int _price, bool _isBought, GameObject _model)
     {
         itemNumber = _itemNumber;
         price = _price;
         isBought = _isBought;
+        this.model = _model;
     }
 }
