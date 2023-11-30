@@ -10,7 +10,7 @@ public class PlayerSpawnerManager : MonoBehaviour
     private void Awake()
     {
         //TurnOffMeshRenders();
-        SpawnPlayer();
+        //SpawnPlayer();
     }
     public void SpawnPlayer()
     {

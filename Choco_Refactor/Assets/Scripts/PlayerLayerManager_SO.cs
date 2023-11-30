@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerLayerManager_SO : ScriptableObject
 {
     [SerializeField] LayerMask player1Mask, player2Mask, player3Mask, player4Mask;
+
     [SerializeField] bool horizontalSplitScreen = false;
     Vector4 onePlayerViewport = new Vector4(0, 0, 1, 1);
     Vector4[] twoPlayerHorizontalViewports = new Vector4[]
@@ -30,6 +31,7 @@ public class PlayerLayerManager_SO : ScriptableObject
     public Rect GetPlayerViewPort(int whichPlayer, int totalPlayers)
     {
         Rect rectExample = new Rect(0,0,0,0);
+        Debug.Log($"whichPlayer: {whichPlayer} // totalPlayers {totalPlayers}");
 
         if(totalPlayers == 1)
         {
@@ -48,6 +50,7 @@ public class PlayerLayerManager_SO : ScriptableObject
         }
         else if(totalPlayers >= 3)
         {
+            whichPlayer -= 1;
             return new Rect(threeOrMorePlayersViewPorts[whichPlayer].x, threeOrMorePlayersViewPorts[whichPlayer].y, threeOrMorePlayersViewPorts[whichPlayer].z, threeOrMorePlayersViewPorts[whichPlayer].w);
         }
         else

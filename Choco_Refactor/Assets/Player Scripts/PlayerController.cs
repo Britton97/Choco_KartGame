@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] int playerNumber;
     private Kart_Input input;
     [SerializeField] PlayerInput playerInput;
     [SerializeField] Player_Stats player_stats;
@@ -41,10 +42,6 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()

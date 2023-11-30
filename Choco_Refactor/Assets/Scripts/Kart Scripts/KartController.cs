@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class KartController : MonoBehaviour, ICollisionHandlerable
 {
@@ -12,7 +13,8 @@ public class KartController : MonoBehaviour, ICollisionHandlerable
 
     //---Input---//
     private Kart_Input _input;
-
+    //private PlayerInput _input;
+    [SerializeField] public int playerNumber = -1;
     //---Kart Objects---//
     [SerializeField] private GameObject _kartNormal;
     [SerializeField] private GameObject _modelHolder;
@@ -35,6 +37,12 @@ public class KartController : MonoBehaviour, ICollisionHandlerable
     public UnityEvent onLeaveKart;
     public UnityEvent onEnterKart;
     [SerializeField] DataGameObject cinemachineCam;
+
+    public void TestingInput(InputAction.CallbackContext context)
+    {
+        float button = context.ReadValue<float>();
+        Debug.Log($"Player {playerNumber} button = {button}");
+    }
 
     #region OnEnable/OnDisable Functions
     private void OnEnable()

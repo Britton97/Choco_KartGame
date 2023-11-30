@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 using UnityEngine.VFX;
 
 
 public class Ground_State : State_Base
 {
+    [SerializeField] PlayerInput playerInput;
     [Header("Ground State Variables")]
     [SerializeField] private float rayDistance = 1f; // Distance of the raycast used to detect the ground.
     [SerializeField] private float applyGravityRayDistance; // Distance of the raycast used to apply gravity.
@@ -36,6 +38,12 @@ public class Ground_State : State_Base
         //boostEffect.SetFloat("BoostPower", boostPercentageToFull);
     }
 
+    public void Testing(InputAction.CallbackContext context)
+    {
+        Vector2 button = context.ReadValue<Vector2>();
+        Debug.Log($"button");
+    }
+
     private void FixedUpdate()
     {
         AirCheck();
@@ -53,6 +61,7 @@ public class Ground_State : State_Base
         EnableorDisableDriftEffect();
         DoCharacterBlends();
     }
+    #region Character Blend Variables and Functions
     float characterBlendValue = 0;
     [SerializeField] float blendSpeed = 1;
     public void DoCharacterBlends()
@@ -61,11 +70,13 @@ public class Ground_State : State_Base
         characterBlendValue = Mathf.Lerp(characterBlendValue, move.x, Time.deltaTime * blendSpeed);
         characterLeanObjects.ChangeBlendState(characterBlendValue);
     }
+    #endregion
     #region OnEnter and OnExit Functions
     public override void OnEnter(Rigidbody passedRB, GameObject pKartModel, GameObject pKartNormal, GameObject pTiltObject, Kart_Input pInput, Kart_Stats pStats, Player_Stats pPlayerStats)
     {
 
         base.OnEnter(passedRB, pKartModel, pKartNormal, pTiltObject, pInput, pStats, pPlayerStats);
+
         if (passedRB == null)
         {
             Debug.LogError($"nothing was passed");
