@@ -40,7 +40,7 @@ public abstract class State_Base : MonoBehaviour
         input = pInput;
         kart_stats = pStats;
         player_stats = pPlayerStats;
-        Debug.Log($"Tilt object = {pTiltObject.name}");
+        //Debug.Log($"Tilt object = {pTiltObject.name}");
 
         try
         {

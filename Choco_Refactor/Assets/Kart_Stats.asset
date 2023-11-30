@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Kart_Stats
   m_EditorClassIdentifier: 
   player_stats: {fileID: 11400000, guid: bc2b0f8bcdf262a42adda24edd3bee92, type: 2}
-  topSpeed: 12
+  topSpeed: 0.5
   decelerateRate: 0.5
   accelrateRate: 7
   scootSpeed: {fileID: 11400000, guid: d60cdb92e795c4047abfa94541bd533f, type: 2}

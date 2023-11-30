@@ -13,7 +13,7 @@ public class Menu_Input : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _priceText, myMoneyText;
     [SerializeField] private int myMoney = 300;
     [SerializeField] private Vector3 leftPos, rightPos;
-    [SerializeField] private bool leftActive = true;
+    //[SerializeField] private bool leftActive = true;
     //[SerializeField] List<int> prices = new List<int>();
     [SerializeField] List<Store_Items> items = new List<Store_Items>();
     private int currentSelection;
@@ -72,7 +72,7 @@ public class Menu_Input : MonoBehaviour
     {
         aButtonDownLastFrame = aButtonDownCurrentFrame;
     }
-
+    /*
     private void MoveSelector()
     {
         Vector2 move = _input.Kart_Controls.Move.ReadValue<Vector2>();
@@ -87,7 +87,7 @@ public class Menu_Input : MonoBehaviour
             leftActive = true;
         }
     }
-
+    */
     IEnumerator SendMessageCoroutine()
     {
         while (true)

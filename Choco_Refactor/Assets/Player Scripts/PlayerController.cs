@@ -2,11 +2,13 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
     private Kart_Input input;
+    [SerializeField] PlayerInput playerInput;
     [SerializeField] Player_Stats player_stats;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private float jumpForce = 1000f;
