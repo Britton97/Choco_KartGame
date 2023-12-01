@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7ccfe1b539a9a14dac699a9894bdd8c, type: 3}
+  m_Name: P1_P4_Speed
+  m_EditorClassIdentifier: 
+  UIType: Speed Text
+  screenResolution: {x: 1121, y: 1307}
+  anchorPos: {x: 0.5, y: 0.5}
+  widthHeightRatio: {x: 1, y: 0.75}
+  widthPercentage: 0.1
+  widthPercentagePositionOffset: -0.75
+  heightPercentage: 0.1
+  heightPercentagePositionOffset: 0
+  actualWidth: 112.1
+  actualHeight: 98.025
+  actualXPos: -84.075
+  actualYPos: 0

@@ -7,7 +7,7 @@ public class PlayerLayerManager_SO : ScriptableObject
 {
     [SerializeField] LayerMask player1Mask, player2Mask, player3Mask, player4Mask;
 
-    [SerializeField] bool horizontalSplitScreen = false;
+    [SerializeField] public bool horizontalSplitScreen = false;
     Vector4 onePlayerViewport = new Vector4(0, 0, 1, 1);
     Vector4[] twoPlayerHorizontalViewports = new Vector4[]
     {

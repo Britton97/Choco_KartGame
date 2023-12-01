@@ -1,13 +1,21 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class Air_State : State_Base
 {
+    [SerializeField] PlayerInput playerInput;
     [Header("Exit State Condition")]
     [SerializeField] private LayerMask groundLayer;
     private float elaspedTimeInFlyingState;
+
+    [Header("Lean Settings")]
+    [SerializeField] private CharacterRigObjects characterLeanObjects;
+    //[SerializeField] CinemachineFreeLook freeLookCamera;
+    [SerializeField] CinemachineInputProvider cinemachineInputProvider;
 
     #region Update and FixedUpdate Functions
     private void Update()
@@ -21,25 +29,48 @@ public class Air_State : State_Base
     {
         LeftStick();
         Move();
-        Tilt();
+        Tilt(leftJoystick);
         FlyingAngle();
         GroundPull();
     }
     #endregion
+
+    private Vector2 leftJoystick = Vector2.zero;
+    private Vector2 rightJoystick = Vector2.zero;
+    private float actionButton = 0;
+    public void ReceiveLeftStick(InputAction.CallbackContext context)
+    {
+        leftJoystick = context.ReadValue<Vector2>();
+    }
+
+    public void ReceiveRightStick(InputAction.CallbackContext context)
+    {
+        rightJoystick = context.ReadValue<Vector2>();
+    }
+
+    public void ReceiveActionButton(InputAction.CallbackContext context)
+    {
+        actionButton = context.ReadValue<float>();
+    }
     #region OnEnter Function
     public override void OnEnter(Rigidbody passedRB, GameObject pKartModel, GameObject pKartNormal, GameObject pTiltObject, Kart_Input pInput, Kart_Stats pStats, Player_Stats pPlayerStats)
     {
         base.OnEnter(passedRB, pKartModel, pKartNormal, pTiltObject, pInput, pStats, pPlayerStats);
+
+        playerInput = GetComponent<PlayerInput>();
+        int index = playerInput.playerIndex;
+        cinemachineInputProvider.PlayerIndex = index;
+
         elaspedTimeInFlyingState = 0;
         kart_stats.canAffectCharge = false;
     }
     #endregion
     #region AButton Function and Variables
-    private float button;
+    //private float button;
     public override void AButton()
     {
-        button = input.Kart_Controls.ActionButton.ReadValue<float>(); //read value of A button
-        if (button == 1) //if 'A' button held down execute below
+        //button = input.Kart_Controls.ActionButton.ReadValue<float>(); //read value of A button
+        if (actionButton == 1) //if 'A' button held down execute below
         {
             ApplyGravity();
         }
@@ -93,12 +124,12 @@ public class Air_State : State_Base
     [SerializeField] private float yTurnSpeedMultiplier = 2f;
     public override void LeftStick()
     {
-        Vector2 move = input.Kart_Controls.Move.ReadValue<Vector2>();
+        //Vector2 move = input.Kart_Controls.Move.ReadValue<Vector2>();
 
         float x = kartModel.transform.eulerAngles.x;
         float y = kartModel.transform.eulerAngles.y;
-        x = x + (move.y * (kart_stats.ReturnTurnStat()) * xTurnSpeedMultiplier * Time.deltaTime);
-        y = y + (move.x * (kart_stats.ReturnTurnStat()) * yTurnSpeedMultiplier * Time.deltaTime);
+        x = x + (leftJoystick.y * (kart_stats.ReturnTurnStat()) * xTurnSpeedMultiplier * Time.deltaTime);
+        y = y + (leftJoystick.x * (kart_stats.ReturnTurnStat()) * yTurnSpeedMultiplier * Time.deltaTime);
         kartModel.transform.rotation = Quaternion.Euler(x, y, 0);
     }
     #endregion
@@ -106,9 +137,9 @@ public class Air_State : State_Base
     private float currentSpeed;
     public override void Move()
     {
-        float button = input.Kart_Controls.ActionButton.ReadValue<float>();
+        //float button = input.Kart_Controls.ActionButton.ReadValue<float>();
 
-        if (button == 0)
+        if (actionButton == 0)
         {
             currentSpeed = Mathf.Lerp(currentSpeed, kart_stats.ReturnTopSpeedStat(), Time.deltaTime * kart_stats.accelrateRate);
         }

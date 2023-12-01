@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a69024d10212914bbd60e82a96eb919, type: 3}
   m_Name: Material Path
   m_EditorClassIdentifier: 
-  _name: $(CHANNEL).png
-  _filePath: Assets/HDAs/$(CHANNEL).png
+  _name: $New_(CHANNEL).png
+  _filePath: Assets/HDAs/$New_(CHANNEL).png

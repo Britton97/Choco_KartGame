@@ -1,5 +1,7 @@
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 // This class is the base class for all states in the kart state machine.
@@ -40,6 +42,7 @@ public abstract class State_Base : MonoBehaviour
         input = pInput;
         kart_stats = pStats;
         player_stats = pPlayerStats;
+
         //Debug.Log($"Tilt object = {pTiltObject.name}");
 
         try
@@ -76,11 +79,11 @@ public abstract class State_Base : MonoBehaviour
     private float currentTiltY;
 
     // This method is called when the kart is tilted.
-    public virtual void Tilt()
+    public virtual void Tilt(Vector2 context)
     {
-        Vector2 move = input.Kart_Controls.Move.ReadValue<Vector2>();
-        float tiltX = move.x * 20; //20
-        float tiltY = move.y * 20; //10
+        //Vector2 move = context.ReadValue<Vector2>();
+        float tiltX = context.x * 20; //20
+        float tiltY = context.y * 20; //10
         currentTiltX = Mathf.Lerp(currentTiltX, tiltX, Time.deltaTime * 8f);
         currentTiltY = Mathf.Lerp(currentTiltY, tiltY, Time.deltaTime * 8f);
         tiltObject.transform.localEulerAngles = new Vector3(currentTiltY, tiltObject.transform.localEulerAngles.y, -currentTiltX);

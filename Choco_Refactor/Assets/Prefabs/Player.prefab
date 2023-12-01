@@ -1368,7 +1368,19 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 436408176929812974}
         m_TargetAssemblyTypeName: Ground_State, Assembly-CSharp
-        m_MethodName: Testing
+        m_MethodName: ReceiveLeftStick
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 436408176929812969}
+        m_TargetAssemblyTypeName: Air_State, Assembly-CSharp
+        m_MethodName: ReceiveLeftStick
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1381,14 +1393,62 @@ MonoBehaviour:
     m_ActionId: d4f34e06-dcda-4feb-b602-e9eb04b79399
     m_ActionName: Kart_Controls/Move[/DualSenseGamepadHID/leftStick,/XInputControllerWindows/leftStick]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 436408176929812974}
+        m_TargetAssemblyTypeName: Ground_State, Assembly-CSharp
+        m_MethodName: ReceiveRightStick
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 436408176929812969}
+        m_TargetAssemblyTypeName: Air_State, Assembly-CSharp
+        m_MethodName: ReceiveActionButton
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 05d641e9-14a5-449c-9440-f61d50d47825
     m_ActionName: Kart_Controls/CameraControl[/DualSenseGamepadHID/rightStick,/XInputControllerWindows/rightStick]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 436408176929812974}
+        m_TargetAssemblyTypeName: Ground_State, Assembly-CSharp
+        m_MethodName: ReceiveActionButton
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 436408176929812969}
+        m_TargetAssemblyTypeName: Air_State, Assembly-CSharp
+        m_MethodName: ReceiveActionButton
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 78f62f59-4c6a-4522-a5e6-23862aff439d
     m_ActionName: Kart_Controls/ActionButton[/DualSenseGamepadHID/buttonSouth,/XInputControllerWindows/buttonSouth]
-  m_NeverAutoSwitchControlSchemes: 1
+  m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Gamepad_Scheme
   m_DefaultActionMap: Kart_Controls
   m_SplitScreenIndex: -1
@@ -1417,7 +1477,7 @@ MonoBehaviour:
   player_stats: {fileID: 11400000, guid: bc2b0f8bcdf262a42adda24edd3bee92, type: 2}
   _gravity: {fileID: 11400000, guid: 331e6da666dca154ea97d4d542a9c7b5, type: 2}
   _gravityMultiplier: {fileID: 11400000, guid: aea95f479c3f7ea4c841bcf0d1d3f047, type: 2}
-  playerInput: {fileID: 0}
+  playerInput: {fileID: 70056245454305655}
   rayDistance: 2
   applyGravityRayDistance: 1
   wallRayDistance: 1
@@ -1427,6 +1487,8 @@ MonoBehaviour:
   boostEffect: {fileID: 436408176339328256}
   driftEffect: {fileID: 436408176399379601}
   characterLeanObjects: {fileID: 436408176131771874}
+  freeLookCamera: {fileID: 2402485044046407886}
+  cinemachineInputProvider: {fileID: 2402485044046407887}
   blendSpeed: 3
   _matchNormalSpeed: 8
   onBoostStart:
@@ -1485,9 +1547,12 @@ MonoBehaviour:
   player_stats: {fileID: 0}
   _gravity: {fileID: 11400000, guid: 331e6da666dca154ea97d4d542a9c7b5, type: 2}
   _gravityMultiplier: {fileID: 11400000, guid: aea95f479c3f7ea4c841bcf0d1d3f047, type: 2}
+  playerInput: {fileID: 70056245454305655}
   groundLayer:
     serializedVersion: 2
     m_Bits: 64
+  characterLeanObjects: {fileID: 436408176131771874}
+  cinemachineInputProvider: {fileID: 2402485044046407887}
   applyGravityRayDistance: 0.05
   groundCheckRayDistance: 1
   xTurnSpeedMultiplier: 1
@@ -3105,7 +3170,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2786173417244756873, guid: 292e89ad11922e047a6b35b082f6b85c, type: 3}
+  - {fileID: 2100000, guid: 9e3e838ad57af1e488ae3ecbba79b3f1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8033,7 +8098,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -3183259664201008285, guid: 292e89ad11922e047a6b35b082f6b85c, type: 3}
+  - {fileID: 2100000, guid: 8fd0e2606c37bdc4a9652cbf01af8bf9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

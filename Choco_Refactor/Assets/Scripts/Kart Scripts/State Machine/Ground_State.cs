@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +21,12 @@ public class Ground_State : State_Base
 
     [Header("Lean Settings")]
     [SerializeField] private CharacterRigObjects characterLeanObjects;
+    //[SerializeField] CinemachineFreeLook freeLookCamera;
+    [SerializeField] CinemachineInputProvider cinemachineInputProvider;
+
+    //testing
+    //testing
+
     private float currentSpeed; // The current speed of the kart.
 
     #region WaveEffect (Commented Out)
@@ -38,14 +45,27 @@ public class Ground_State : State_Base
         //boostEffect.SetFloat("BoostPower", boostPercentageToFull);
     }
 
-    public void Testing(InputAction.CallbackContext context)
+    private Vector2 leftJoystick = Vector2.zero;
+    private Vector2 rightJoystick = Vector2.zero;
+    private float actionButton = 0;
+    public void ReceiveLeftStick(InputAction.CallbackContext context)
     {
-        Vector2 button = context.ReadValue<Vector2>();
-        Debug.Log($"button");
+        leftJoystick = context.ReadValue<Vector2>();
+    }
+    
+    public void ReceiveRightStick(InputAction.CallbackContext context)
+    {
+        rightJoystick = context.ReadValue<Vector2>();
+    }
+
+    public void ReceiveActionButton(InputAction.CallbackContext context)
+    {
+        actionButton = context.ReadValue<float>();
     }
 
     private void FixedUpdate()
     {
+        //Debug.Log(rightJoystick);
         AirCheck();
         SetDriveMomentumDirection();
         SpeedTurnLimiter();
@@ -53,7 +73,8 @@ public class Ground_State : State_Base
         MatchNormal();
         ApplyGravity();
         Move();
-        Tilt();
+        Tilt(leftJoystick);
+        //CameraControl(rightJoystick);
         WallCheck();
         BoardIdleSine();
         UpdateChargeMeter();
@@ -66,8 +87,8 @@ public class Ground_State : State_Base
     [SerializeField] float blendSpeed = 1;
     public void DoCharacterBlends()
     {
-        Vector2 move = input.Kart_Controls.Move.ReadValue<Vector2>();
-        characterBlendValue = Mathf.Lerp(characterBlendValue, move.x, Time.deltaTime * blendSpeed);
+        //Vector2 move = input.Kart_Controls.Move.ReadValue<Vector2>();
+        characterBlendValue = Mathf.Lerp(characterBlendValue, leftJoystick.x, Time.deltaTime * blendSpeed);
         characterLeanObjects.ChangeBlendState(characterBlendValue);
     }
     #endregion
@@ -76,6 +97,10 @@ public class Ground_State : State_Base
     {
 
         base.OnEnter(passedRB, pKartModel, pKartNormal, pTiltObject, pInput, pStats, pPlayerStats);
+
+        playerInput = GetComponent<PlayerInput>();
+        int index = playerInput.playerIndex;
+        cinemachineInputProvider.PlayerIndex = index;
 
         if (passedRB == null)
         {
@@ -126,8 +151,8 @@ public class Ground_State : State_Base
     private float currentRotate;
     public override void LeftStick()
     {
-        Vector2 move = input.Kart_Controls.Move.ReadValue<Vector2>();
-        rotate = move.x * (kart_stats.ReturnTurnStat());
+        //Vector2 move = input.Kart_Controls.Move.ReadValue<Vector2>();
+        rotate = leftJoystick.x * (kart_stats.ReturnTurnStat());
         currentRotate = Mathf.Lerp(currentRotate, rotate, Time.deltaTime * 4f);
         float turnLimiter = Mathf.Abs(currentSpeed / kart_stats.ReturnTopSpeedStat());
         //currentRotate = currentRotate * kart_stats.turnSpeedLimiterCurve.Evaluate(turnLimiter);
@@ -170,9 +195,9 @@ public class Ground_State : State_Base
     private bool lastFrameForButtonDown = false;
     public override void AButton()
     {
-        float button = input.Kart_Controls.ActionButton.ReadValue<float>();
+        //float button = input.Kart_Controls.ActionButton.ReadValue<float>();
 
-        if (button == 1) //button held down == 1
+        if (actionButton == 1) //button held down == 1
         {
             Vector2 move = input.Kart_Controls.Move.ReadValue<Vector2>();
 
@@ -198,7 +223,7 @@ public class Ground_State : State_Base
                 currentSpeed = kart_stats.scootSpeed.DataValue;
             }
         }
-        else if (button == 0) //button up == 0
+        else if (actionButton == 0) //button up == 0
         {
             if (lastFrameForButtonDown)
             {
@@ -272,10 +297,10 @@ public class Ground_State : State_Base
     private float _configureSpeed;
     public override void Move()
     {
-        float button = input.Kart_Controls.ActionButton.ReadValue<float>(); //button down == 1 / button up == 0
+        //float button = input.Kart_Controls.ActionButton.ReadValue<float>(); //button down == 1 / button up == 0
         _configureSpeed = boostPower * kart_stats.boostMultiplier;
 
-        if (button == 0)
+        if (actionButton == 0)
         {
             currentSpeed = Mathf.Lerp(currentSpeed, kart_stats.ReturnTopSpeedStat(), Time.deltaTime * kart_stats.accelrateRate);
         }
@@ -372,18 +397,18 @@ public class Ground_State : State_Base
     }
     public Vector3 DriftMomentumControl()
     {
-        float button = input.Kart_Controls.ActionButton.ReadValue<float>();
+        //float button = input.Kart_Controls.ActionButton.ReadValue<float>();
         //if (button == 0 || currentSpeed <= kart_stats.scootSpeed.DataValue) { return kartModel.transform.forward; }
         if (currentSpeed <= kart_stats.scootSpeed.DataValue) { return kartModel.transform.forward; }
 
-        if(button == 0)
+        if(actionButton == 0)
         {
             float blendPercentage = currentSpeed / kart_stats.ReturnTopSpeedStat(); //this might be better
             float blend = momentumDriveCurve.Evaluate(blendPercentage);
 
             moveDirection = (driveMomentumDirection * blend) + (kartModel.transform.forward * (1 - blend));
         }
-        if (button == 1)
+        if (actionButton == 1)
         {
             float blendPercentage = currentSpeed / kart_stats.ReturnTopSpeedStat(); //this might be better
             float blend = kart_stats.momentumDriftCurve.Evaluate(blendPercentage);
@@ -402,14 +427,14 @@ public class Ground_State : State_Base
     }
     private void EnableorDisableDriftEffect()
     {
-        Vector2 move = input.Kart_Controls.Move.ReadValue<Vector2>();
-        float button = input.Kart_Controls.ActionButton.ReadValue<float>();
-        if (button == 0)
+        //Vector2 move = input.Kart_Controls.Move.ReadValue<Vector2>();
+        //float button = input.Kart_Controls.ActionButton.ReadValue<float>();
+        if (actionButton == 0)
         {
             driftEffect.gameObject.SetActive(false);
             return;
         }
-        if (Mathf.Abs(move.x) > driftThreshold)
+        if (Mathf.Abs(leftJoystick.x) > driftThreshold)
         {
             driftEffect.gameObject.SetActive(true);
         }
@@ -418,11 +443,11 @@ public class Ground_State : State_Base
             driftEffect.gameObject.SetActive(false);
             return;
         }
-        if (move.x < 0)
+        if (leftJoystick.x < 0)
         {
             driftEffect.SetBool("LeftorRight", true);
         }
-        else if (move.x > 0)
+        else if (leftJoystick.x > 0)
         {
             driftEffect.SetBool("LeftorRight", false);
         }

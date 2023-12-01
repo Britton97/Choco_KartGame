@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Kart_Stats
   m_EditorClassIdentifier: 
   player_stats: {fileID: 11400000, guid: bc2b0f8bcdf262a42adda24edd3bee92, type: 2}
-  topSpeed: 0.5
-  decelerateRate: 0.5
-  accelrateRate: 7
+  topSpeed: 14
+  decelerateRate: 2.23
+  accelrateRate: 25
   scootSpeed: {fileID: 11400000, guid: d60cdb92e795c4047abfa94541bd533f, type: 2}
   forceMultiplier: {fileID: 11400000, guid: ae41fa63509894e48a8a3d4b81468e10, type: 2}
-  boostMultiplier: 30
+  boostMultiplier: 50
   boostPowerOverTime:
     serializedVersion: 2
     m_Curve:
@@ -68,24 +68,24 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  timeBoostActive: 1
+  timeBoostActive: 0.5
   driftTurnLimiterCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: -0.65
-      outSlope: -0.65
+      inSlope: -0.6765878
+      outSlope: -0.6765878
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 1
-      value: 0.35
-      inSlope: -0.65
-      outSlope: -0.65
+      time: 1.0674351
+      value: 0.27778634
+      inSlope: -0.6765878
+      outSlope: -0.6765878
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -117,7 +117,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  turnSpeed: 60
+  turnSpeed: 80
   turnSpeedLimiterCurve:
     serializedVersion: 2
     m_Curve:
@@ -125,16 +125,16 @@ MonoBehaviour:
       time: 0
       value: 1
       inSlope: 0
-      outSlope: 0
+      outSlope: 0.00031610587
       tangentMode: 69
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.8
-      value: 1
-      inSlope: -0
-      outSlope: -0.5000002
+      time: 0.4382114
+      value: 1.0001385
+      inSlope: 0.00031610587
+      outSlope: -0.17824952
       tangentMode: 69
       weightedMode: 0
       inWeight: 0.33333334
@@ -142,7 +142,7 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 0.9
-      inSlope: -0.5000002
+      inSlope: -0.17824952
       outSlope: -2.5000002
       tangentMode: 69
       weightedMode: 0
@@ -191,17 +191,17 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 0.375
-      outSlope: 0.375
+      inSlope: 1.125
+      outSlope: 1.125
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 2
-      value: 1.5
-      inSlope: 0.5
-      outSlope: 0.5
+      value: 3
+      inSlope: 2
+      outSlope: 2
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
