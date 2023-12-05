@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Kart_Stats
   m_EditorClassIdentifier: 
   player_stats: {fileID: 11400000, guid: bc2b0f8bcdf262a42adda24edd3bee92, type: 2}
-  topSpeed: 14
-  decelerateRate: 2.23
+  topSpeed: 12
+  decelerateRate: 1
   accelrateRate: 25
   scootSpeed: {fileID: 11400000, guid: d60cdb92e795c4047abfa94541bd533f, type: 2}
   forceMultiplier: {fileID: 11400000, guid: ae41fa63509894e48a8a3d4b81468e10, type: 2}
-  boostMultiplier: 50
+  boostMultiplier: 1
   boostPowerOverTime:
     serializedVersion: 2
     m_Curve:
@@ -99,17 +99,17 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0.7030046
-      outSlope: 0.7030046
+      inSlope: 1
+      outSlope: 1
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 0.7030046
-      inSlope: 0.7030046
-      outSlope: 0.7030046
+      value: 1
+      inSlope: 1
+      outSlope: 1
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -117,7 +117,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  turnSpeed: 80
+  turnSpeed: 100
   turnSpeedLimiterCurve:
     serializedVersion: 2
     m_Curve:

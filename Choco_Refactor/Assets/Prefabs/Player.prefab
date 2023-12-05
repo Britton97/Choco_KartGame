@@ -1408,7 +1408,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 436408176929812969}
         m_TargetAssemblyTypeName: Air_State, Assembly-CSharp
-        m_MethodName: ReceiveActionButton
+        m_MethodName: ReceiveRightStick
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1487,7 +1487,6 @@ MonoBehaviour:
   boostEffect: {fileID: 436408176339328256}
   driftEffect: {fileID: 436408176399379601}
   characterLeanObjects: {fileID: 436408176131771874}
-  freeLookCamera: {fileID: 2402485044046407886}
   cinemachineInputProvider: {fileID: 2402485044046407887}
   blendSpeed: 3
   _matchNormalSpeed: 8
