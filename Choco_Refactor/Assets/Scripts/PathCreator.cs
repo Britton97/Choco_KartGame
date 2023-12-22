@@ -13,10 +13,10 @@ public class PathCreator : ScriptableObject
     private void OnValidate()
     {
         //Debug.Log("OnValidate");
-        string filePath = AssetDatabase.GetAssetPath(this);
-        int index = filePath.LastIndexOf('/');
+        //string filePath = AssetDatabase.GetAssetPath(this);
+        //int index = filePath.LastIndexOf('/');
 
-        filePath = filePath.Substring(0, index);
-        _filePath = $"{filePath}/" + _name;
+        //filePath = filePath.Substring(0, index);
+        //_filePath = $"{filePath}/" + _name;
     }
 }

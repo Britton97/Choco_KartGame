@@ -9,7 +9,7 @@ public class Damageable : MonoBehaviour, IDamageable
     [Header("Health Fields")]
     [SerializeField] private DataFloat maxHealth;
     [SerializeField] private float health;
-    [SerializeField] InterfaceChecker iDamageable;
+    [SerializeField] InterfaceChecker iDoDamage;
     public FloatReference healthReference;
 
     [Header("On Damage Events")]
@@ -34,7 +34,7 @@ public class Damageable : MonoBehaviour, IDamageable
 
     private void OnTriggerEnter(Collider other)
     {
-        if(iDamageable.CheckInterface(other.gameObject) != null)
+        if(iDoDamage.CheckInterface(other.gameObject) != null)
         {
             float damageAmount = other.GetComponent<IDoDamage>().DoDamage();
             healthReference.dataEvent.Invoke(damageAmount);

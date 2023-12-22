@@ -7,14 +7,14 @@ using UnityEngine;
 public class Player_Stats : ScriptableObject
 {
     [Header("Current Player Stats")]
-    [SerializeField] public float boostAmount = 0;
-    [SerializeField] public float topSpeedAmount = 0;
-    [SerializeField] public float turnAmount = 0;
-    [SerializeField] public float chargeAmount = 0;
-    [SerializeField] public float glideAmount = 0;
-    [SerializeField] public float weightAmount = 0;
-    [SerializeField] public float offenseAmount = 0;
-    [SerializeField] public float defenseAmount = 0;
+    [SerializeField] private float boostAmount = 0;
+    [SerializeField] private float topSpeedAmount = 0;
+    [SerializeField] private float turnAmount = 0;
+    [SerializeField] private float chargeAmount = 0;
+    [SerializeField] private float glideAmount = 0;
+    [SerializeField] private float weightAmount = 0;
+    [SerializeField] private float offenseAmount = 0;
+    [SerializeField] private float defenseAmount = 0;
     [Header("")]
     [SerializeField] private bool doNotAllowStatReset = false;
 
@@ -63,6 +63,15 @@ public class Player_Stats : ScriptableObject
                 break;
         }
     }
+
+    public float GetBoostAmount() { return boostAmount;}
+    public float GetTopSpeedAmount() { return topSpeedAmount; }
+    public float GetTurnAmount() { return turnAmount; }
+    public float GetChargeAmount() { return chargeAmount; }
+    public float GetGlideAmount() { return glideAmount; }
+    public float GetWeightAmount() { return weightAmount; }
+    public float GetOffenseAmount() { return offenseAmount; }
+    public float GetDefenseAmount() { return defenseAmount; }
 }
 
 public enum StatType

@@ -1,0 +1,35 @@
+.MainMenu-Button {
+    width: 50%;
+    height: 15%;
+    -unity-font-definition: url('project://database/Assets/Fonts/Nougat-ExtraBlack%20SDF.asset?fileID=11400000&guid=6fe93d4f6be4a8a4b950c7ba30840de8&type=2#Nougat-ExtraBlack SDF');
+    background-color: rgb(255, 188, 9);
+    font-size: 100px;
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    text-shadow: -4px 4px 0 rgba(46, 46, 46, 0.71);
+    color: rgb(255, 255, 255);
+    -unity-text-outline-width: 0;
+    letter-spacing: 2px;
+    -unity-font-style: normal;
+    border-left-color: rgb(46, 46, 46);
+    border-right-color: rgb(46, 46, 46);
+    border-top-color: rgb(46, 46, 46);
+    border-bottom-color: rgb(46, 46, 46);
+    -unity-background-scale-mode: stretch-to-fill;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out-elastic;
+}
+
+.MainMenu-Button:hover {
+    scale: 1.1 1.1;
+}
+
+.MainMenu-Button:active {
+    background-color: rgba(255, 211, 95, 255);
+}

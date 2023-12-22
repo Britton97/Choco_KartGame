@@ -141,7 +141,7 @@ public class Air_State : State_Base
 
         if (actionButton == 0)
         {
-            currentSpeed = Mathf.Lerp(currentSpeed, kart_stats.ReturnTopSpeedStat(), Time.deltaTime * kart_stats.accelrateRate);
+            currentSpeed = Mathf.Lerp(currentSpeed, kart_stats.ReturnTopSpeedStat(), Time.deltaTime * kart_stats.baseAccelrateRate);
         }
         rb.AddForce((kartModel.transform.forward * currentSpeed * kart_stats.forceMultiplier.DataValue) * calculatedDotProduct);
     }
@@ -160,7 +160,7 @@ public class Air_State : State_Base
     #region FlightSlider Function and Variables
     private void FlightSlider()
     {
-        _uiBoostSlider.value = elaspedTimeInFlyingState / kart_stats.flightTime;
+        _uiBoostSlider.value = elaspedTimeInFlyingState / kart_stats.baseGllideTime;
     }
     #endregion
 }

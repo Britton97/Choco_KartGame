@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 7581f99cccf8fd249adb4fd6c6399f47
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Nougat
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 08af4c7e6b3c31d459598e46fd08c0bb, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

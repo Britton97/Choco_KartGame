@@ -279,10 +279,10 @@ public class Ground_State : State_Base
         onBoostStart.Invoke();
         //kartModel.transform.localScale = new Vector3(1, 1, 1);
 
-        while (dechargeBoostTime < kart_stats.timeBoostActive)
+        while (dechargeBoostTime < kart_stats.baseBoostDuration)
         {
             dechargeBoostTime += Time.deltaTime;
-            float percentage = dechargeBoostTime / kart_stats.timeBoostActive;
+            float percentage = dechargeBoostTime / kart_stats.baseBoostDuration;
             boostPercentageToFullUI = Mathf.Lerp(boostPercentageToFullUI, 0, percentage);
             boostPower = kart_stats.boostPowerOverTime.Evaluate(percentage) * boostPercentageToFull;
             yield return waitForFixedUpdateDecharge;
@@ -298,11 +298,11 @@ public class Ground_State : State_Base
     public override void Move()
     {
         //float button = input.Kart_Controls.ActionButton.ReadValue<float>(); //button down == 1 / button up == 0
-        _configureSpeed = boostPower * kart_stats.boostMultiplier;
+        _configureSpeed = boostPower * kart_stats.baseBoost;
 
         if (actionButton == 0)
         {
-            currentSpeed = Mathf.Lerp(currentSpeed, kart_stats.ReturnTopSpeedStat(), Time.deltaTime * kart_stats.accelrateRate);
+            currentSpeed = Mathf.Lerp(currentSpeed, kart_stats.ReturnTopSpeedStat(), Time.deltaTime * kart_stats.baseAccelrateRate);
         }
 
         #region WaveEffect Logic (Commented Out)
@@ -342,7 +342,7 @@ public class Ground_State : State_Base
     public void BoardIdleSine()
     {
         time += Time.deltaTime;
-        speedAdjuster = currentSpeed / (kart_stats.topSpeed + (player_stats.topSpeedAmount -1));
+        speedAdjuster = currentSpeed / (kart_stats.baseTopSpeed + (player_stats.GetTopSpeedAmount() -1));
         float newAmp = Remap(speedAdjuster, 0f, 1f, minAmplitude, maxAmplitude);
 
         float y = newAmp * Mathf.Sin(2f * Mathf.PI * upDownFrequency * time);

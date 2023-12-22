@@ -13,12 +13,9 @@ MonoBehaviour:
   m_Name: Kart_Stats
   m_EditorClassIdentifier: 
   player_stats: {fileID: 11400000, guid: bc2b0f8bcdf262a42adda24edd3bee92, type: 2}
-  topSpeed: 12
-  decelerateRate: 1
-  accelrateRate: 25
+  baseAccelrateRate: 2
   scootSpeed: {fileID: 11400000, guid: d60cdb92e795c4047abfa94541bd533f, type: 2}
   forceMultiplier: {fileID: 11400000, guid: ae41fa63509894e48a8a3d4b81468e10, type: 2}
-  boostMultiplier: 1
   boostPowerOverTime:
     serializedVersion: 2
     m_Curve:
@@ -43,7 +40,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  timeToChargeBoost: 1
   modelBoostShrinkCurve:
     serializedVersion: 2
     m_Curve:
@@ -68,7 +64,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  timeBoostActive: 0.5
+  baseBoostDuration: 1
   driftTurnLimiterCurve:
     serializedVersion: 2
     m_Curve:
@@ -117,7 +113,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  turnSpeed: 100
   turnSpeedLimiterCurve:
     serializedVersion: 2
     m_Curve:
@@ -151,7 +146,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  flightTime: 4
   flightCurve:
     serializedVersion: 2
     m_Curve:
@@ -210,6 +204,14 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   canAffectCharge: 1
+  baseBoost: 1
+  baseTopSpeed: 12
+  baseTurnSpeed: 60
+  baseChargeTime: 1
+  baseGllideTime: 4
+  baseDecelerateRate: 2
+  baseOffenseAmount: 1
+  baseDefenseAmount: 1
   boostStatMultiplier: 1
   topSpeedStatMultiplier: 1
   turnStatMultiplier: 1

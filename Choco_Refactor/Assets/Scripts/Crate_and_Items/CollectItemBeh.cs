@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CollectItemBeh : MonoBehaviour
 {
-    private Player_Stats player_Stats;
+    [SerializeField] private Player_Stats player_Stats;
 
     public void GetStats(Player_Stats pStats)
     {

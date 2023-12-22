@@ -4,10 +4,25 @@ using UnityEngine;
 
 public class DoesDamage : MonoBehaviour, IDoDamage
 {
-    //[SerializeField] private DataFloat damageAmount;
-    [SerializeField] private FloatReference damageAmount;
+    [SerializeField] public Player_Stats playerStats;
+    [SerializeField] public Kart_Stats kartStats;
     public float DoDamage()
     {
-        return damageAmount.Value;
+        return kartStats.ReturnOffenseStat();
+    }
+
+    private void Start()
+    {
+        GetPlayerStats();
+    }
+
+    public void GetPlayerStats()
+    {
+        playerStats = transform.parent.GetComponent<PlayerInfoGetter>().GetPlayerStats();
+    }
+
+    public void GetKartStats()
+    {
+        //kartStats = 
     }
 }

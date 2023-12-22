@@ -18,8 +18,7 @@ public abstract class State_Base : MonoBehaviour
     [HideInInspector] public Kart_Input input;
     [HideInInspector] public KartController kartController;
     [Header("UI GameObjects")]
-    [SerializeField] public DataGameObject uiBoostSlider;
-    [HideInInspector] public Slider _uiBoostSlider;
+    [SerializeField] public Slider _uiBoostSlider;
     //---Kart GameObjects---//
     [HideInInspector]public Rigidbody rb;
     [HideInInspector]public GameObject kartNormal;
@@ -44,15 +43,6 @@ public abstract class State_Base : MonoBehaviour
         player_stats = pPlayerStats;
 
         //Debug.Log($"Tilt object = {pTiltObject.name}");
-
-        try
-        {
-            _uiBoostSlider = uiBoostSlider.DataValue.GetComponent<Slider>();
-        }
-        catch
-        {
-
-        }
 
         //onEnterEvent.Invoke();
     }

@@ -12,7 +12,7 @@ public class CollisionHandler : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        //Debug.Log($"Collision with {collision.gameObject.name}");
+        //Debug.Log($"I am {gameObject.name} and I collide with {collision.gameObject.name}");
         if(interfaceChecker.CheckInterface(collision.gameObject) != null)
         {
             if(collision.gameObject.GetComponent<ICollisionHandlerable>() != null)
@@ -21,12 +21,6 @@ public class CollisionHandler : MonoBehaviour
             }
             CollisionHandlerEvent.Invoke(this.gameObject ,collision.gameObject);
             onPassedInterfaceCheck.Invoke();
-
         }
     }
-}
-
-public interface ICollisionHandlerable
-{
-    void CollisionHandler(GameObject hitObject, GameObject hittingObject);
 }

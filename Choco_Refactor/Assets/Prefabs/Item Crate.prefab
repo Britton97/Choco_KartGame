@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 1820461490721635610}
   - component: {fileID: 1820461490721635611}
   - component: {fileID: 1820461490721635606}
-  m_Layer: 0
+  - component: {fileID: 4035978870346696383}
+  m_Layer: 7
   m_Name: Item Crate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,11 +52,12 @@ MonoBehaviour:
   sideForceMax: 5
   sideForceMin: 1
   upwardForce: 5
+  maxHealth: {fileID: 11400000, guid: a1f9bff820e04e847836e03efb62f128, type: 2}
   health: 2
   myMesh: {fileID: 6034710561711064329}
   myCollider: {fileID: 1820461490721635606}
   animationBehavior: {fileID: 8687123826849570698}
-  itemPrefab: {fileID: 4830948666646130121, guid: 8fab9ea2be6e9574c9927729fb356f97, type: 3}
+  itemPrefab: {fileID: 6196051983847521024, guid: 8fab9ea2be6e9574c9927729fb356f97, type: 3}
 --- !u!65 &1820461490721635606
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -69,6 +71,37 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 3, y: 3, z: 3}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4035978870346696383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1820461490721635607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb3e204e5f12ba748b5880bf5bcbbe8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interfaceChecker: {fileID: 11400000, guid: 3096b30682687cf4b9d89db8adf434a6, type: 2}
+  CollisionHandlerEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1820461490721635611}
+        m_TargetAssemblyTypeName: Crate_Beh, Assembly-CSharp
+        m_MethodName: CollisionHandler
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onPassedInterfaceCheck:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &2448949204513045539
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -76,9 +109,45 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1820461490721635610}
     m_Modifications:
+    - target: {fileID: 3284379465593760530, guid: 592c1636804b5f54aab8395df4fafa5c, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3590828719117898932, guid: 592c1636804b5f54aab8395df4fafa5c, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 5035570268932065130, guid: 592c1636804b5f54aab8395df4fafa5c, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6116162900956894986, guid: 592c1636804b5f54aab8395df4fafa5c, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6375478935419729804, guid: 592c1636804b5f54aab8395df4fafa5c, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 6692506879805879410, guid: 592c1636804b5f54aab8395df4fafa5c, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7119100500336344590, guid: 592c1636804b5f54aab8395df4fafa5c, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 8233691844659099946, guid: 592c1636804b5f54aab8395df4fafa5c, type: 3}
       propertyPath: m_Name
       value: Wooden Crate
+      objectReference: {fileID: 0}
+    - target: {fileID: 8233691844659099946, guid: 592c1636804b5f54aab8395df4fafa5c, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8323598078308244986, guid: 592c1636804b5f54aab8395df4fafa5c, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 8721259948570305424, guid: 592c1636804b5f54aab8395df4fafa5c, type: 3}
       propertyPath: m_RootOrder
@@ -123,6 +192,14 @@ PrefabInstance:
     - target: {fileID: 8721259948570305424, guid: 592c1636804b5f54aab8395df4fafa5c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8813549542102361445, guid: 592c1636804b5f54aab8395df4fafa5c, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8892937642922073231, guid: 592c1636804b5f54aab8395df4fafa5c, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 592c1636804b5f54aab8395df4fafa5c, type: 3}

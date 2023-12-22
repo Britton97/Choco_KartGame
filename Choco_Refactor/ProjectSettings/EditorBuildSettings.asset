@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Physics_Kart.unity
+    guid: 35f14a8a9b759fc49827c5d54229fb6f
   m_configObjects: {}
