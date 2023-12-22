@@ -15,6 +15,9 @@ public class KartController : MonoBehaviour, ICollisionHandlerable
     private Kart_Input _input;
     //private PlayerInput _input;
     [SerializeField] public int playerNumber = -1;
+    [SerializeField] CinemachineInputProvider cinemachineInputProvider;
+    [SerializeField] Camera playerCamera;
+    [SerializeField] PlayerLayerManager_SO playerLayerManager_SO;
     //---Kart Objects---//
     [SerializeField] private GameObject _kartNormal;
     [SerializeField] private GameObject _modelHolder;
@@ -61,6 +64,11 @@ public class KartController : MonoBehaviour, ICollisionHandlerable
         _input = new Kart_Input();
         onAwake.Invoke();
         player_stats.ResetStats();
+        playerNumber = GetComponent<PlayerInput>().playerIndex;
+        cinemachineInputProvider.PlayerIndex = playerNumber;
+        playerCamera.cullingMask = playerLayerManager_SO.GetCamerCullingMasks(playerNumber);
+        playerCamera.gameObject.layer = playerLayerManager_SO.SetLayer(playerNumber);
+        cinemachineInputProvider.gameObject.layer = playerLayerManager_SO.SetLayer(playerNumber);
 
         try
         {

@@ -7,60 +7,7 @@ public class PlayerLayerManager_SO : ScriptableObject
 {
     [SerializeField] LayerMask player1Mask, player2Mask, player3Mask, player4Mask;
 
-    [SerializeField] public bool horizontalSplitScreen = false;
-    Vector4 onePlayerViewport = new Vector4(0, 0, 1, 1);
-    Vector4[] twoPlayerHorizontalViewports = new Vector4[]
-    {
-        new Vector4(0,.5f,1,.5f),
-        new Vector4(0,0,1,.5f)
-    };    
-    Vector4[] twoPlayerVerticalViewports = new Vector4[]
-    {
-        new Vector4(0,0,.5f,1),
-        new Vector4(.5f,0,.5f,1)
-    };
-    Vector4[] threeOrMorePlayersViewPorts = new Vector4[]
-    {
-        new Vector4(0,.5f,.5f,.5f),
-        new Vector4(.5f,.5f,.5f,.5f),
-        new Vector4(0,0,.5f,.5f),
-        new Vector4(.5f,0,.5f,.5f)
-    };
-
-
-    public Rect GetPlayerViewPort(int whichPlayer, int totalPlayers)
-    {
-        Rect rectExample = new Rect(0,0,0,0);
-        Debug.Log($"whichPlayer: {whichPlayer} // totalPlayers {totalPlayers}");
-
-        if(totalPlayers == 1)
-        {
-            return new Rect(onePlayerViewport.x, onePlayerViewport.y, onePlayerViewport.z, onePlayerViewport.w);
-        }
-        else if (totalPlayers == 2)
-        {
-            if(horizontalSplitScreen)
-            {
-                return new Rect(twoPlayerHorizontalViewports[whichPlayer].x, twoPlayerHorizontalViewports[whichPlayer].y, twoPlayerHorizontalViewports[whichPlayer].z, twoPlayerHorizontalViewports[whichPlayer].w);
-            }
-            else
-            {
-                return new Rect(twoPlayerVerticalViewports[whichPlayer].x, twoPlayerVerticalViewports[whichPlayer].y, twoPlayerVerticalViewports[whichPlayer].z, twoPlayerVerticalViewports[whichPlayer].w);
-            }
-        }
-        else if(totalPlayers >= 3)
-        {
-            whichPlayer -= 1;
-            return new Rect(threeOrMorePlayersViewPorts[whichPlayer].x, threeOrMorePlayersViewPorts[whichPlayer].y, threeOrMorePlayersViewPorts[whichPlayer].z, threeOrMorePlayersViewPorts[whichPlayer].w);
-        }
-        else
-        {
-            Debug.LogError("Invalid number of players");
-            return rectExample;
-        }
-    }
-
-    public LayerMask GetPlayerLayerMask(int whichPlayer)
+    public LayerMask GetCamerCullingMasks(int whichPlayer)
     {
         if(whichPlayer == 0)
         {
@@ -82,6 +29,31 @@ public class PlayerLayerManager_SO : ScriptableObject
         {
             Debug.LogError("Invalid player number");
             return player1Mask;
+        }
+    }
+
+    public LayerMask SetLayer(int whichPlayer)
+    {
+        if (whichPlayer == 0)
+        {
+            return LayerMask.NameToLayer("P1 Camera");
+        }
+        else if (whichPlayer == 1)
+        {
+            return LayerMask.NameToLayer("P2 Camera");
+        }
+        else if (whichPlayer == 2)
+        {
+            return LayerMask.NameToLayer("P3 Camera");
+        }
+        else if (whichPlayer == 3)
+        {
+            return LayerMask.NameToLayer("P4 Camera");
+        }
+        else
+        {
+            Debug.LogError("Invalid player number");
+            return LayerMask.NameToLayer("P1 Camera");
         }
     }
 }

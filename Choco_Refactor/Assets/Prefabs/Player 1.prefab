@@ -1272,7 +1272,7 @@ GameObject:
   - component: {fileID: 377382031566410930}
   - component: {fileID: 377382031566410931}
   - component: {fileID: 2478531698160537475}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: CM FreeLook1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5779,7 +5779,7 @@ MonoBehaviour:
   m_DefaultControlScheme: Gamepad_Scheme
   m_DefaultActionMap: Kart_Controls
   m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 1930134960557876691}
 --- !u!114 &2478531698913480082
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5894,6 +5894,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerNumber: -1
+  cinemachineInputProvider: {fileID: 377382031566410931}
+  playerCamera: {fileID: 1930134960557876691}
+  playerLayerManager_SO: {fileID: 11400000, guid: 0763650d0ba092841b4e4b111f4aa750, type: 2}
   _kartNormal: {fileID: 2478531698753577340}
   _modelHolder: {fileID: 3361069209330170758}
   _tiltObject: {fileID: 2478531698841602904}
@@ -6682,7 +6685,8 @@ GameObject:
   - component: {fileID: 2478531699706983708}
   - component: {fileID: 2478531699706983711}
   - component: {fileID: 2478531699706983710}
-  - component: {fileID: 843817795}
+  - component: {fileID: 1332033216}
+  - component: {fileID: 1332033217}
   m_Layer: 8
   m_Name: Collider Ball
   m_TagString: Player Collider
@@ -6816,7 +6820,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53a8c40815ff7d14d97862263870f6f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &843817795
+--- !u!114 &1332033216
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6825,7 +6829,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 2478531699706983705}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aeef9a86139fe1b46a90e585da8ae7ad, type: 3}
+  m_Script: {fileID: 11500000, guid: f74df414cc24aaf4bba69283c9ca77b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStats: {fileID: 11400000, guid: bc2b0f8bcdf262a42adda24edd3bee92, type: 2}
+  kartStats: {fileID: 11400000, guid: 49fe9a8b62a6d014598069a4f2ab45fb, type: 2}
+--- !u!114 &1332033217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2478531699706983705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb3e204e5f12ba748b5880bf5bcbbe8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   interfaceChecker: {fileID: 11400000, guid: 4873cb139654b064f8178c96c79d42ed, type: 2}
