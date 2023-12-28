@@ -32,7 +32,7 @@ public class KartController : MonoBehaviour, ICollisionHandlerable
     //[SerializeField] private Dictionary<KartState, State_Base> _stateDictionary = new Dictionary<KartState, State_Base>();
 
     //---Kart Stats---//
-    [SerializeField] Kart_Stats kart_stats;
+    [SerializeField] public Kart_Stats kart_stats;
     [SerializeField] Player_Stats player_stats;
 
     //---Events---//

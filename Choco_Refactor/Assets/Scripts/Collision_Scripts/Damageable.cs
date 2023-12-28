@@ -3,49 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-[RequireComponent(typeof(Collider))]
-public class Damageable : MonoBehaviour, IDamageable
+[RequireComponent(typeof(Collider), typeof(Health_Abstract))]
+//and require component of health abstract
+public class Damageable : MonoBehaviour, IDamageable, ICollisionHandlerable
 {
-    [Header("Health Fields")]
-    [SerializeField] private DataFloat maxHealth;
-    [SerializeField] private float health;
-    [SerializeField] InterfaceChecker iDoDamage;
-    public FloatReference healthReference;
-
-    [Header("On Damage Events")]
-    [SerializeField] private UnityEvent<float> updateHealth;
-    [SerializeField] private UnityEvent onHealthBelowZero;
+    private Health_Abstract healthComponent;
 
     private void Start()
     {
-        health = maxHealth.DataValue;
-        updateHealth.Invoke(health);
+        healthComponent = GetComponent<Health_Abstract>();
     }
     public void TakeDamage(float damage)
     {
-        health -= damage;
-        updateHealth.Invoke(health);
-        if (health <= 0)
-        {
-            onHealthBelowZero.Invoke();
-            Debug.Log("I'm dead");
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if(iDoDamage.CheckInterface(other.gameObject) != null)
-        {
-            float damageAmount = other.GetComponent<IDoDamage>().DoDamage();
-            healthReference.dataEvent.Invoke(damageAmount);
-
-            //somehow i need to send information back to the collider that hit me
-            //so that i can give it points for hitting me
-        }
+        healthComponent.ChangeHealth(-damage);
     }
 
     public void DestroySelf()
     {
         Destroy(gameObject);
+    }
+
+    public void CollisionHandler(GameObject hitObject, GameObject hittingObject)
+    {
+        Debug.Log($"I am {gameObject.name} / hitObj = {hitObject.name} / hittingObj = {hittingObject.name}");
+
+        DoesDamage_Abstract doesDamage = hittingObject.GetComponent<DoesDamage_Abstract>();
+        if (doesDamage != null)
+        {
+            float _out = doesDamage.DoDamage();
+            Debug.Log($"Damage recieved = {_out}");
+            TakeDamage(_out);
+        }
     }
 }

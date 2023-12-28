@@ -7,7 +7,7 @@ public class C_DoesDamage : InterfaceChecker
 {
     public override Component CheckInterface(GameObject passIn)
     {
-        if(passIn.TryGetComponent<IDoDamage>(out IDoDamage damageable))
+        if(passIn.TryGetComponent<DoesDamage_Abstract>(out DoesDamage_Abstract damageable))
         {
             return damageable as Component;
         }

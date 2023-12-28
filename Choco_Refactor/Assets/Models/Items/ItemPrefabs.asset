@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: ItemPrefabs
   m_EditorClassIdentifier: 
   statType: 0
-  boost: {fileID: 325253348343449750, guid: 92d4f57b0be5cb942aa1529a66c666bc, type: 3}
-  topSpeed: {fileID: 3838320110933028205, guid: c9432f02759b05f4592c2c860ea516da, type: 3}
-  turn: {fileID: 325253348343449750, guid: 92d4f57b0be5cb942aa1529a66c666bc, type: 3}
+  boost: {fileID: 8637837962113654058, guid: bfe62381e70b22a4f8dfd247b00938a6, type: 3}
+  topSpeed: {fileID: 6035365485387890329, guid: bb0c31b3ea5797a479d5a23f245b9017, type: 3}
+  turn: {fileID: 1672593053816012926, guid: 32b41324a6b22f74a9b679b382e627a6, type: 3}
   charge: {fileID: 325253348343449750, guid: 92d4f57b0be5cb942aa1529a66c666bc, type: 3}
   glide: {fileID: 325253348343449750, guid: 92d4f57b0be5cb942aa1529a66c666bc, type: 3}
   weight: {fileID: 325253348343449750, guid: 92d4f57b0be5cb942aa1529a66c666bc, type: 3}

@@ -8,6 +8,7 @@ public class BillBoard_Beh : MonoBehaviour
     private GameObject lookAtObject;
     void Start()
     {
+        Debug.Log($"Biilboard here: {gameObject.name}");
         lookAtObject = dataGameObject.DataValue;
     }
 

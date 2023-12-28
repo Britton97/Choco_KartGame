@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 1820461490721635611}
   - component: {fileID: 1820461490721635606}
   - component: {fileID: 4035978870346696383}
+  - component: {fileID: 1976756334}
+  - component: {fileID: 1976756335}
   m_Layer: 7
   m_Name: Item Crate
   m_TagString: Untagged
@@ -52,12 +54,8 @@ MonoBehaviour:
   sideForceMax: 5
   sideForceMin: 1
   upwardForce: 5
-  maxHealth: {fileID: 11400000, guid: a1f9bff820e04e847836e03efb62f128, type: 2}
-  health: 2
-  myMesh: {fileID: 6034710561711064329}
-  myCollider: {fileID: 1820461490721635606}
-  animationBehavior: {fileID: 8687123826849570698}
   itemPrefab: {fileID: 6196051983847521024, guid: 8fab9ea2be6e9574c9927729fb356f97, type: 3}
+  rigidbodyChecker: {fileID: 11400000, guid: 16d225aac65147f4eb560afbd791104f, type: 2}
 --- !u!65 &1820461490721635606
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -87,6 +85,18 @@ MonoBehaviour:
   CollisionHandlerEvent:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1976756335}
+        m_TargetAssemblyTypeName: Damageable, Assembly-CSharp
+        m_MethodName: CollisionHandler
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1820461490721635611}
         m_TargetAssemblyTypeName: Crate_Beh, Assembly-CSharp
         m_MethodName: CollisionHandler
@@ -102,6 +112,92 @@ MonoBehaviour:
   onPassedInterfaceCheck:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1976756334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1820461490721635607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b27e09a3e110bcd4c8542f8f94c5a4fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: {fileID: 11400000, guid: a1f9bff820e04e847836e03efb62f128, type: 2}
+  currentHealth: 5
+  onHealthChanged:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8687123826849570698}
+        m_TargetAssemblyTypeName: AnimationBehavior, Assembly-CSharp
+        m_MethodName: PlayAnimation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 11400000, guid: 9dc8f30b5a7f070428b7de1b5a10ed57, type: 2}
+        m_TargetAssemblyTypeName: Debugger_SO, Assembly-CSharp
+        m_MethodName: DebugLog
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: health changed
+          m_BoolArgument: 0
+        m_CallState: 2
+  onHealthChangedFloat:
+    m_PersistentCalls:
+      m_Calls: []
+  onHealthBelowZero:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1820461490721635611}
+        m_TargetAssemblyTypeName: Crate_Beh, Assembly-CSharp
+        m_MethodName: SpawnItemPrefabs
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1820461490721635611}
+        m_TargetAssemblyTypeName: Crate_Beh, Assembly-CSharp
+        m_MethodName: DestroySelf
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  sendOutMaxHealth:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1976756335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1820461490721635607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e87f0d965ff0c294f862615f1ba6eb0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2448949204513045539
 PrefabInstance:
   m_ObjectHideFlags: 0
