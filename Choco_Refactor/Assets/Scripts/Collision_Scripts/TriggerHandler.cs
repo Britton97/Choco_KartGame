@@ -16,7 +16,7 @@ public class TriggerHandler : MonoBehaviour
         {
             if (collision.gameObject.GetComponent<ICollisionHandlerable>() != null)
             {
-                collision.gameObject.GetComponent<ICollisionHandlerable>().CollisionHandler(this.gameObject, collision.gameObject);
+                //collision.gameObject.GetComponent<ICollisionHandlerable>().CollisionHandler(this.gameObject, collision.gameObject);
             }
             CollisionHandlerEvent.Invoke(this.gameObject, collision.gameObject);
             onPassedInterfaceCheck.Invoke();

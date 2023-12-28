@@ -40,7 +40,7 @@ public class PickUpItemTriggerEffects : MonoBehaviour
 
         while(timeElspased < burstDuration)
         {
-            Debug.Log("bursting");
+            //Debug.Log("bursting");
             mat.SetFloat("_CircleExpansionPercentage", expandCurve.Evaluate(timeElspased / burstDuration));
             mat.SetFloat("_AlphaPower", alphaCurve.Evaluate(timeElspased / burstDuration));
             timeElspased += Time.fixedDeltaTime;
